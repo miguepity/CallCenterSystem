@@ -1,10 +1,15 @@
+require("dotenv").config();
+
+const { DB_USER, DB_PASSWORD, DB_NAME } = process.env;
+
+
 module.exports = {
   development: {
-    "username": "root",
-    "password": null,
-    "database": "callcenter_development",
+    "username": DB_USER,
+    "password": DB_PASSWORD,
+    "database": DB_NAME,
     "host": "127.0.0.1",
-    "dialect": "mysql"
+    "dialect": "postgres"
   },
   "test": {
     "username": "root",
