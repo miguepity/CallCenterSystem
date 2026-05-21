@@ -3,21 +3,27 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('call_queue', {
-      id: {
+      id: 
+      {
+
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.UUID
+        
       },
       call_id: 
       {
 
         type: Sequelize.UUID,
         primaryKey:true,
-        
+
       },
-      priority: {
+      priority: 
+      {
+
         type: Sequelize.INTEGER
+
       },
       joined_at: 
       {
@@ -26,13 +32,23 @@ module.exports = {
         type: Sequelize.DATE
 
       },
-      updated_at: {
+      created_at: 
+      {
+
         allowNull: false,
         type: Sequelize.DATE
+
+      },
+      updated_at: 
+      {
+
+        allowNull: false,
+        type: Sequelize.DATE
+
       }
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('employees');
+    await queryInterface.dropTable('call_queue');
   }
 };

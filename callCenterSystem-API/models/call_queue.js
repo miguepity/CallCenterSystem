@@ -13,14 +13,20 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  employees.init({
-    name: DataTypes.STRING,
-    is_available: DataTypes.BOOLEAN,
-    rank: DataTypes.INTEGER
-  }, {
+  call_queue.init({
+
+    id: DataTypes.UUID,
+    call_id: DataTypes.UUID,
+    priority: DataTypes.INTEGER,
+    joined_at: DataTypes.DATE
+    
+  }, 
+  {
+
     sequelize,
-    modelName: 'employees',
+    modelName: 'call_queue',
     underscored: true,
+
   });
-  return employees;
+  return call_queue;
 };
