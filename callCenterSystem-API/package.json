@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "start": "nodemon ./bin/www",
-    "migrate": "sequelize-cli db:migrate"
+    "db:create": "sequelize-cli db:create",
+    "migrate": "sequelize-cli db:migrate",
+    "m:undo": "sequelize-cli db:migrate:undo:all"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",

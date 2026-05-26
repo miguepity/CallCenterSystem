@@ -9,9 +9,6 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      id_: {
-        type: Sequelize.UUID
-      },
       caller_name: {
         type: Sequelize.STRING
       },
@@ -30,8 +27,19 @@ module.exports = {
       finished_at: {
         type: Sequelize.DATE
       },
-      created_at: {
-        type: Sequelize.DATE
+      employeeId: {
+        references: {
+          model: 'employees',
+          key: 'id'
+        },
+        type: Sequelize.UUID
+      },
+      callQueueId: {
+        references: {
+          model: 'call_queue',
+          key: 'id'
+        },
+        type: Sequelize.UUID
       },
       createdAt: {
         allowNull: false,
@@ -42,8 +50,17 @@ module.exports = {
         type: Sequelize.DATE
       }
     });
+    await queryInterface.addColumn('call_queue', "callId", {
+      name: 'call_id',
+      type: Sequelize.INTEGER,
+      references: {
+        model: 'Calls',
+        key: 'id'
+      }
+    });
   },
   async down(queryInterface, Sequelize) {
+    await queryInterface.removeColumn('call_queue', 'callId');
     await queryInterface.dropTable('Calls');
   }
 };

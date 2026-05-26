@@ -3,43 +3,36 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('call_queue', {
-      id: 
+      id:
       {
 
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.UUID
-        
-      },
-      call_id: 
-      {
-
         type: Sequelize.UUID,
-        primaryKey:true,
+        defaultValue: Sequelize.UUIDV4
 
       },
-      priority: 
+      priority:
       {
 
         type: Sequelize.INTEGER
 
       },
-      joined_at: 
+      joined_at:
       {
 
         allowNull: false,
         type: Sequelize.DATE
 
       },
-      created_at: 
+      created_at:
       {
 
         allowNull: false,
         type: Sequelize.DATE
 
       },
-      updated_at: 
+      updated_at:
       {
 
         allowNull: false,

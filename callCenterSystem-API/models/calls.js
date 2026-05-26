@@ -11,6 +11,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Calls.belongsTo(models.employees, {
+      });
+      Calls.hasMany(models.call_queue, {
+      });
     }
   }
   Calls.init({

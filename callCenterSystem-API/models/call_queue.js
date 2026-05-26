@@ -11,6 +11,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      call_queue.belongsTo(models.Calls, {
+      });
     }
   }
   call_queue.init({
@@ -19,14 +21,14 @@ module.exports = (sequelize, DataTypes) => {
     call_id: DataTypes.UUID,
     priority: DataTypes.INTEGER,
     joined_at: DataTypes.DATE
-    
-  }, 
-  {
 
-    sequelize,
-    modelName: 'call_queue',
-    underscored: true,
+  },
+    {
 
-  });
+      sequelize,
+      modelName: 'call_queue',
+      underscored: true,
+
+    });
   return call_queue;
 };
