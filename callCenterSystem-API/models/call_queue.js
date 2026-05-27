@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   call_queue.init({
-    id: {
+  id: {
     type: DataTypes.UUID,
     primaryKey: true,
     defaultValue: DataTypes.UUIDV4
