@@ -9,8 +9,7 @@ async function createcall(req, res) {
       status: req.body.status,
       started_at: req.body.started_at,
       finished_at: req.body.finished_at,
-      employeeId: req.body.employeeId,
-      callQueueId: req.body.callQueueId
+      employeeId: req.body.employeeId
     });
 
     res.status(201).json(call);
