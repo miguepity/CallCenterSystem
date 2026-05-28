@@ -13,21 +13,27 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Calls.belongsTo(models.employees, {
       });
-      Calls.hasMany(models.call_queue, {
+      Calls.hasMany(models.call_queues, {
       });
     }
   }
   Calls.init({
-    id_: DataTypes.UUID,
+    id: {
+        type: DataTypes.UUID,
+        primaryKey:true,
+        defaultValue: DataTypes.UUIDV4,
+    },
     caller_name: DataTypes.STRING,
     caller_phone: DataTypes.STRING,
     rank_required: DataTypes.STRING,
     status: DataTypes.STRING,
     started_at: DataTypes.DATE,
     finished_at: DataTypes.DATE,
-    created_at: DataTypes.DATE
+    createdAt: DataTypes.DATE
   }, {
     sequelize,
+    timestamps: true,
+    underscored: true,
     modelName: 'Calls',
   });
   return Calls;

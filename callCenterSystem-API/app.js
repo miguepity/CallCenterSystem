@@ -26,7 +26,7 @@ app.use('/api',employeRoutes)
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/calls', callsRouter);
+app.use('/api', callsRouter);
 app.use('/api', callQueue);
 
 // catch 404 and forward to error handler
