@@ -8,8 +8,8 @@ const {
 
 router.post('/call-queue', postCallQueue)
 
-router.get('/call-queue', getCallQueue)
+router.get('/call-queue/:queueId', getCallQueue)
 
-router.put('/call-queue', putCallQueue)
+router.put('/call-queue/:queueId', putCallQueue)
 
 module.exports = router;

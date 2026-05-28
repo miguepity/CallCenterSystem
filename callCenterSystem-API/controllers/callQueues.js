@@ -35,9 +35,6 @@ async function putCallQueue(req, res) {
     if (priority <= 0)
         return res.status(400).json({message: 'Priority must be positive'});
 
-    if (!callId) 
-        return res.status(400).json({message: 'Call id is required'});    
-
     const oldQueue = await db['call_queues'].findByPk(queueId);
 
     if (!oldQueue)
