@@ -13,10 +13,10 @@ const getCalls = async (req, res) => {
         },
         {
           model: call_queue,
-          as: 'callQueue',
+          as: 'queue',
         },
       ],
-      order: [['created_at', 'DESC']],
+      order: [['createdAt', 'DESC']],
     });
 
     res.json(calls);
