@@ -15,6 +15,12 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   employees.init({
+    id: {
+      allowNull: false,
+      primaryKey: true,
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+    },
     name: DataTypes.STRING(100),
     is_available: DataTypes.BOOLEAN,
     rank: DataTypes.INTEGER,

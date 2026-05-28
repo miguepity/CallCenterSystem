@@ -8,24 +8,25 @@ module.exports = (sequelize, DataTypes) => {
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
+     * 
      */
     static associate(models) {
       // define association here
       Calls.belongsTo(models.employees, {
       });
-      Calls.hasMany(models.call_queue, {
-      });
+     Calls.hasMany(models.call_queue, {
+     foreignKey: 'call_id',
+      as: 'queue'
+    });
     }
   }
   Calls.init({
-    id_: DataTypes.UUID,
     caller_name: DataTypes.STRING,
     caller_phone: DataTypes.STRING,
     rank_required: DataTypes.STRING,
     status: DataTypes.STRING,
     started_at: DataTypes.DATE,
     finished_at: DataTypes.DATE,
-    created_at: DataTypes.DATE
   }, {
     sequelize,
     modelName: 'Calls',
