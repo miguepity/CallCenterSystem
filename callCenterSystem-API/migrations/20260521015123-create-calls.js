@@ -50,7 +50,8 @@ module.exports = {
         type: Sequelize.DATE
       }
     });
-    await queryInterface.addColumn('call_queue', "callId", {
+
+    await queryInterface.addColumn('call_queue', "call_id", {
       name: 'call_id',
       type: Sequelize.INTEGER,
       references: {
@@ -60,7 +61,7 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.removeColumn('call_queue', 'callId');
+    await queryInterface.removeColumn('call_queue', 'call_id');
     await queryInterface.dropTable('Calls');
   }
 };
