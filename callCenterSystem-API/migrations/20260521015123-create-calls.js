@@ -54,7 +54,7 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.removeColumn('call_queue', 'call_id');
-    await queryInterface.dropTable('Calls');
+    await queryInterface.removeColumn('call_queues', 'call_id');
+    await queryInterface.dropTable('calls');
   }
 };
