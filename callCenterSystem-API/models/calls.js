@@ -14,8 +14,10 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Calls.belongsTo(models.employees, {
       });
-      Calls.hasMany(models.call_queue, {
-      });
+     Calls.hasMany(models.call_queue, {
+     foreignKey: 'call_id',
+      as: 'queue'
+    });
     }
   }
   Calls.init({
