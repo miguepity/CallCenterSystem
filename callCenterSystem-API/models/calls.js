@@ -19,14 +19,12 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Calls.init({
-    id_: DataTypes.UUID,
     caller_name: DataTypes.STRING,
     caller_phone: DataTypes.STRING,
     rank_required: DataTypes.STRING,
     status: DataTypes.STRING,
     started_at: DataTypes.DATE,
     finished_at: DataTypes.DATE,
-    created_at: DataTypes.DATE
   }, {
     sequelize,
     modelName: 'Calls',
