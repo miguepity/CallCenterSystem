@@ -6,9 +6,9 @@
             "server": "localhost",
             "port": 5432,
             "driver": "PostgreSQL",
-            "name": "postgres",
             "username": "postgres",
-            "database": "postgres"
+            "database": "RoyU",
+            "name": "CallCenterDB"
         }
     ]
 }
