@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class call_queue extends Model {
+  class call_queues extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -11,13 +11,14 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      call_queue.belongsTo(models.Calls, {
+      call_queues.belongsTo(models.Calls, {
       });
     }
   }
-  call_queue.init({
+  call_queues.init({
     id:{
       type:DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
       primaryKey:true
     },
     call_id: DataTypes.UUID,
@@ -28,9 +29,9 @@ module.exports = (sequelize, DataTypes) => {
     {
 
       sequelize,
-      modelName: 'call_queue',
+      modelName: 'call_queues',
       underscored: true,
 
     });
-  return call_queue;
+  return call_queues;
 };

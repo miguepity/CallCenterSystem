@@ -155,4 +155,5 @@ const getEmployeeById=async(req,res)=>
 }
 
 
+module.exports={createEmployee,desactivarEmployee,activarEmpleado}
 module.exports={createEmployee,desactivarEmployee,activarEmpleado,getEmployee,getEmployeeById}

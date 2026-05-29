@@ -2,11 +2,14 @@ const router = require('express').Router()
 
 const {
     postCallQueue,
-    putCallQueue
+    getCallQueue,
+    putCallQueue,
 } = require('../controllers/callQueues');
 
 router.post('/call-queue', postCallQueue)
 
-router.put('/call-queue', putCallQueue)
+router.get('/call-queue/:queueId', getCallQueue)
+
+router.put('/call-queue/:queueId', putCallQueue)
 
 module.exports = router;

@@ -2,12 +2,12 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Calls', {
+    await queryInterface.createTable('calls', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4
       },
       caller_name: {
         type: Sequelize.STRING
@@ -27,41 +27,34 @@ module.exports = {
       finished_at: {
         type: Sequelize.DATE
       },
-      employeeId: {
+      employee_id: {
         references: {
           model: 'employees',
           key: 'id'
         },
         type: Sequelize.UUID
       },
-      callQueueId: {
-        references: {
-          model: 'call_queue',
-          key: 'id'
-        },
-        type: Sequelize.UUID
-      },
-      createdAt: {
+      created_at: {
         allowNull: false,
         type: Sequelize.DATE
       },
-      updatedAt: {
+      updated_at: {
         allowNull: false,
         type: Sequelize.DATE
       }
     });
 
-    await queryInterface.addColumn('call_queue', "call_id", {
+    await queryInterface.addColumn('call_queues', "call_id", {
       name: 'call_id',
-      type: Sequelize.INTEGER,
+      type: Sequelize.UUID,
       references: {
-        model: 'Calls',
+        model: 'calls',
         key: 'id'
       }
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.removeColumn('call_queue', 'call_id');
-    await queryInterface.dropTable('Calls');
+    await queryInterface.removeColumn('call_queues', 'call_id');
+    await queryInterface.dropTable('calls');
   }
 };
