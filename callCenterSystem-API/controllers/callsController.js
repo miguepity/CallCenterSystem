@@ -69,9 +69,20 @@ const updateCall = async (req, res) => {
   }
 };
 
+// POST /calls
+const createCall = async (req, res) => {
+  try {
+    const newCall = await Calls.create(req.body);
+    res.status(201).json(newCall);
+  } catch (error) {
+    console.error('ERROR POST /calls:', error);
+    res.status(500).json({ error: error.message });
+  }
+};
 
 module.exports = {
   getCalls,
   getCallById,
-  updateCall
+  updateCall,
+  createCall
 };
