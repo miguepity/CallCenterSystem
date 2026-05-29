@@ -128,5 +128,31 @@ const getEmployee=async(req,res)=>
 
 }
 
+const getEmployeeById=async(req,res)=>
+{
 
-module.exports={createEmployee,desactivarEmployee,activarEmpleado,getEmployee}
+    try
+    {
+
+        const {id}=req.params
+        const employee=await employees.findByPk(id)
+
+        if(!employee)
+        {
+
+            return res.status(404).json({message:"Empleado no encontrado"})
+
+        }
+
+        res.json(employee)
+
+    }catch(error){
+
+        res.status(500).json({message:error.message})
+
+    }
+
+}
+
+
+module.exports={createEmployee,desactivarEmployee,activarEmpleado,getEmployee,getEmployeeById}
