@@ -50,8 +50,28 @@ const getCallById = async (req,res)=> {
   }
 };
 
+// PUT /calls/:id
+const updateCall = async (req, res) => {
+  try {
+    const [updatedRows] = await Calls.update(req.body, {
+      where: { id: req.params.id },
+    });
+
+    if (updatedRows === 0) {
+      return res.status(404).json({ error: 'Call not found' });
+    }
+
+    const updatedCall = await Calls.findByPk(req.params.id);
+    res.json(updatedCall);
+  } catch (error) {
+    console.error('ERROR PUT /calls/:id:', error);
+    res.status(500).json({ error: error.message });
+  }
+};
+
 
 module.exports = {
   getCalls,
-  getCallById
+  getCallById,
+  updateCall
 };
