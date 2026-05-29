@@ -80,9 +80,26 @@ const createCall = async (req, res) => {
   }
 };
 
+// DELETE /calls/:id
+const deleteCall = async (req, res) => {
+  try {
+    const deletedRows = await Calls.destroy({
+      where: { id: req.params.id },
+    });
+    if (deletedRows === 0) {
+      return res.status(404).json({ error: 'Call not found' });
+    }
+    res.json({ message: 'Call deleted' });
+  } catch (error) {
+    console.error('ERROR DELETE /calls/:id:', error);
+    res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   getCalls,
   getCallById,
   updateCall,
-  createCall
+  createCall,
+  deleteCall
 };
