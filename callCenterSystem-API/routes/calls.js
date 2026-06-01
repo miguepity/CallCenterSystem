@@ -4,7 +4,7 @@ var callsController = require('../controllers/callsController');
 
 router.get('/', callsController.getCalls);
 router.get('/:id', callsController.getCallById);
-router.put('/',callsController.updateCall);
+router.put('/:id',callsController.updateCall);
 router.post('/', callsController.createCall);
 router.delete('/:id', callsController.deleteCall);
 
