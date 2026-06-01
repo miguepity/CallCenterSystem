@@ -2,6 +2,10 @@ var { Calls } = require('../models');
 
 async function createcall(req, res) {
   try {
+    if (req.body.callQueueId !== undefined) {
+      return res.status(400).json({ message: 'callQueueId no pertenece a Calls; la relacion se gestiona desde call_queues.call_id' });
+    }
+
     var call = await Calls.create({
       caller_name: req.body.caller_name,
       caller_phone: req.body.caller_phone,
@@ -24,7 +28,7 @@ async function putcall(req, res) {
     var data = {};
 
     if (body.callQueueId !== undefined) {
-      return res.status(400).json({ message: 'callQueueId no pertenece a Calls; la relacion se guarda desde call_queue' });
+      return res.status(400).json({ message: 'callQueueId no pertenece a Calls; la relacion se gestiona desde call_queues.call_id' });
     }
 
     if (body.caller_name !== undefined) {

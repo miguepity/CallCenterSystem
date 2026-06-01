@@ -107,26 +107,53 @@ const activarEmpleado=async(req,res)=>
 
 }
 
-// const getEmployee=async(req,res)=>
-// {
+const getEmployee=async(req,res)=>
+{
 
-//     try
-//     {
+    try
+    {
 
-//         const limit=parseInt(req.query.limit)||5
-//         const offset=parseInt(req.query.offset)||0
+        const limit=parseInt(req.query.limit)||5
+        const offset=parseInt(req.query.offset)||0
 
-//        const employee=await employees.findAndCountAll({limit,offset})
+       const employee=await employees.findAndCountAll({limit,offset})
 
-//         res.json({total:employee.count,employee:employee.rows})
+        res.json({total:employee.count,employee:employee.rows})
 
-//     }catch(error){
+    }catch(error){
 
-//         res.status(500).json({message:error.message})
+        res.status(500).json({message:error.message})
 
-//     }
+    }
 
-// }
+}
+
+const getEmployeeById=async(req,res)=>
+{
+
+    try
+    {
+
+        const {id}=req.params
+        const employee=await employees.findByPk(id)
+
+        if(!employee)
+        {
+
+            return res.status(404).json({message:"Empleado no encontrado"})
+
+        }
+
+        res.json(employee)
+
+    }catch(error){
+
+        res.status(500).json({message:error.message})
+
+    }
+
+}
 
 
 module.exports={createEmployee,desactivarEmployee,activarEmpleado}
+module.exports={createEmployee,desactivarEmployee,activarEmpleado,getEmployee,getEmployeeById}
