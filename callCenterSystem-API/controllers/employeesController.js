@@ -49,7 +49,7 @@ const createEmployee = async (req, res) => {
     res.status(500).json({ message: 'Error al crear empleado', error:error.message });
   }
 };
-/*
+
 const deleteEmployee = async (req, res) => {
   try {
     const employee = await employees.findByPk(req.params.id);
@@ -73,11 +73,11 @@ const deleteEmployee = async (req, res) => {
     res.status(500).json({ message: 'Error al eliminar empleado', error });
   }
 };
-*/
+
 module.exports = { 
   getEmployees,
   getEmployeeById,
   createEmployee,
-  //deleteEmployee
+  deleteEmployee
 
  };
