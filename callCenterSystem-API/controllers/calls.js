@@ -1,4 +1,5 @@
-var { Calls } = require('../models');
+var db = require('../models');
+var { Calls, call_queues } = db;
 
 async function createcall(req, res) {
   try {
@@ -18,6 +19,37 @@ async function createcall(req, res) {
   }
 }
 
+async function deletecall(req, res) {
+  var transaction;
+
+  try {
+    transaction = await db.sequelize.transaction();
+
+    var call = await Calls.findByPk(req.params.id, { transaction: transaction });
+
+    if (!call) {
+      await transaction.rollback();
+      return res.status(404).json({ message: 'Llamada no encontrada' });
+    }
+
+    await call_queues.destroy({
+      where: { call_id: req.params.id },
+      transaction: transaction
+    });
+    await call.destroy({ transaction: transaction });
+
+    await transaction.commit();
+    res.status(200).json({ message: 'Llamada eliminada correctamente' });
+  } catch (error) {
+    if (transaction) {
+      await transaction.rollback();
+    }
+
+    res.status(500).json({ message: 'Error al eliminar la llamada', error: error.message });
+  }
+}
+
 module.exports = {
-  createcall: createcall
+  createcall: createcall,
+  deletecall: deletecall
 };
