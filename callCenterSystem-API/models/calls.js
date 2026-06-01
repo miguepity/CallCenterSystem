@@ -12,16 +12,18 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Calls.belongsTo(models.employees, {
+        foreignKey: 'employeeId'
       });
       Calls.hasMany(models.call_queues, {
+        foreignKey: 'call_id'
       });
     }
   }
   Calls.init({
     id: {
-        type: DataTypes.UUID,
-        primaryKey:true,
-        defaultValue: DataTypes.UUIDV4,
+      type: DataTypes.UUID,
+      primaryKey: true,
+      defaultValue: DataTypes.UUIDV4,
     },
     caller_name: DataTypes.STRING,
     caller_phone: DataTypes.STRING,
@@ -29,12 +31,16 @@ module.exports = (sequelize, DataTypes) => {
     status: DataTypes.STRING,
     started_at: DataTypes.DATE,
     finished_at: DataTypes.DATE,
-    createdAt: DataTypes.DATE
+    employeeId: {
+      type: DataTypes.UUID,
+      field: 'employee_id'
+    }
   }, {
     sequelize,
     timestamps: true,
     underscored: true,
     modelName: 'Calls',
+    tableName: 'calls',
   });
   return Calls;
 };
