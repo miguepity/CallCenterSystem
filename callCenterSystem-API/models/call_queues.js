@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       call_queues.belongsTo(models.Calls, {
+        foreignKey: 'call_id'
       });
     }
   }
@@ -31,6 +32,7 @@ module.exports = (sequelize, DataTypes) => {
       sequelize,
       modelName: 'call_queues',
       underscored: true,
+      tableName: 'call_queues',
 
     });
   return call_queues;

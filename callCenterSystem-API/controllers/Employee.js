@@ -8,12 +8,27 @@ const createEmployee=async(req,res)=>
 
         const{name,is_available,rank}=req.body
 
-        if(!name||!name.trim()==='')
+        if(!name||typeof name!=='string'||name.trim()==='')
         {
 
             return res.status(400).json({message:'El nombre es requerido'})
 
         }
+
+        if(typeof is_available!=='boolean')
+        {
+
+            return res.status(400).json({message:'is_available debe ser un true o false'})
+
+        }
+
+        if(typeof rank!=='number'||rank<1)
+        {
+
+            return res.status(400).json({message:'rank debe ser numerico'})
+
+        }
+
         const employ=await employees.create({
 
             name,
@@ -53,7 +68,7 @@ const desactivarEmployee=async(req,res)=>
         if(!employee.is_available)
         {
 
-            return res.status(404).json({message:"El empleado no esta disponible"})
+            return res.status(404).json({message:"El empleado ya no esta disponible"})
 
         }
 
@@ -116,6 +131,19 @@ const getEmployee=async(req,res)=>
         const limit=parseInt(req.query.limit)||5
         const offset=parseInt(req.query.offset)||0
 
+        if(limit<1)
+        {
+
+            return res.status(400).json({message: "limit debe ser mayor a 0"});
+
+        }
+
+        if(offset<0){
+
+            return res.status(400).json({message: "offset no puede ser negativo"});
+
+        }
+
        const employee=await employees.findAndCountAll({limit,offset})
 
         res.json({total:employee.count,employee:employee.rows})
@@ -154,6 +182,4 @@ const getEmployeeById=async(req,res)=>
 
 }
 
-
-module.exports={createEmployee,desactivarEmployee,activarEmpleado}
 module.exports={createEmployee,desactivarEmployee,activarEmpleado,getEmployee,getEmployeeById}
