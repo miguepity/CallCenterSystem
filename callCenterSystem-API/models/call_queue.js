@@ -29,5 +29,6 @@ module.exports = (sequelize, DataTypes) => {
     updatedAt: 'updated_at'
   });
 
+  
   return call_queue;
 };
