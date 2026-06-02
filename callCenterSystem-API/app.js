@@ -45,4 +45,9 @@ app.use(function (err, req, res, next) {
   res.render('error');
 });
 
+const swaggerUi=require('swagger-ui-express')
+
+const swaggerSpecs=require('./config/swagger.js')
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs))
+
 module.exports = app;
