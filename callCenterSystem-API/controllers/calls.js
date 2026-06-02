@@ -47,6 +47,8 @@ async function deletecall(req, res) {
     }
 
     res.status(500).json({ message: 'Error al eliminar la llamada', error: error.message });
+  }
+}
 async function getcalls(req, res) {
   try {
     var limit = parseInt(req.query.limit, 10) || 5;
