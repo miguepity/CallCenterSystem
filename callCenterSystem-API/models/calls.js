@@ -13,11 +13,9 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Calls.belongsTo(models.employees, {
-        foreignKey: 'employeeId',
-        as: 'employee'
       });
      Calls.hasMany(models.call_queue, {
-     foreignKey: 'callId',
+     foreignKey: 'call_id',
       as: 'queue'
     });
     }
@@ -29,20 +27,9 @@ module.exports = (sequelize, DataTypes) => {
     status: DataTypes.STRING,
     started_at: DataTypes.DATE,
     finished_at: DataTypes.DATE,
-    employeeId: {
-      type: DataTypes.UUID,
-      field: 'employeeId'
-    },
-    callQueueId: {
-      type: DataTypes.UUID,
-      field: 'callQueueId'
-    },
-    createdAt: DataTypes.DATE,
-    updatedAt: DataTypes.DATE
   }, {
     sequelize,
     modelName: 'Calls',
-    tableName: 'Calls',
   });
   return Calls;
 };

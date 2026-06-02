@@ -11,7 +11,7 @@ module.exports = {
     await queryInterface.bulkInsert('call_queue', [
       {
         id: uuidv4(),
-        callId: calls[0].id,
+        call_id: calls[0].id,
         priority: 1,
         joined_at: new Date('2026-05-27T09:10:00'),
         created_at: new Date(),
@@ -19,7 +19,7 @@ module.exports = {
       },
       {
         id: uuidv4(),
-        callId: calls[1].id,
+        call_id: calls[1].id,
         priority: 5,
         joined_at: new Date('2026-05-27T09:35:00'),
         created_at: new Date(),
