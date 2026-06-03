@@ -32,21 +32,12 @@
           schema:
             type: object
             properties:
-              caller_name:
-                type: string
-              caller_phone:
-                type: string
-              rank_required:
-                type: string 
-              status:
-                type: string 
-              started_at:
-                type: string
-                format: date-time
-              finished_at:
-                type: string
-                format: date-time
-                nullable: true 
+              caller_name: "Carlos López"
+              caller_phone: "99998888"
+              rank_required: "2"
+              status: "pending"
+              started_at: "2026-06-02T10:00:00.000Z"
+              finished_at: null
             required:
               - caller_name
               - caller_phone
@@ -118,21 +109,12 @@
           schema:
             type: object
             properties:
-              caller_name:
-                type: string
-              caller_phone:
-                type: string
-              rank_required:
-                type: string
-              status:
-                type: string
-              started_at:
-                type: string
-                format: date-time
-              finished_at:
-                type: string
-                format: date-time
-                nullable: true 
+              caller_name: "Carlos López"
+              caller_phone: "99998888"
+              rank_required: "2"
+              status: "pending"
+              started_at: "2026-06-02T10:00:00.000Z"
+              finished_at: null
             required:
               - caller_name
               - caller_phone
@@ -178,21 +160,12 @@
           schema:
             type: object 
             properties:
-                caller_name:
-                  type: string
-                caller_phone:
-                  type: string
-                rank_required:
-                  type: string
-                status:
-                  type: string
-                started_at:
-                  type: string
-                  format: date-time
-                finished_at:
-                  type: string
-                  format: date-time
-                  nullable: true 
+               caller_name: "Carlos López"
+               caller_phone: "99998888"
+               rank_required: "2"
+               status: "pending"
+               started_at: "2026-06-02T10:00:00.000Z"
+               finished_at: null
     responses:
       '200':
         description: Llamada actualizada correctamente
