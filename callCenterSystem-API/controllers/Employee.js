@@ -68,13 +68,13 @@ const desactivarEmployee=async(req,res)=>
         if(!employee.is_available)
         {
 
-            return res.status(404).json({message:"El empleado ya no esta disponible"})
+            return res.status(404).json({message:"El empleado ya esta desactivado"})
 
         }
 
         await employee.update({is_available:false})
 
-        res.json({message:"Empleado no disponible"})
+        res.json({message:"Empleado desactivado correctamente"})
 
 
     }catch(error){
@@ -105,13 +105,13 @@ const activarEmpleado=async(req,res)=>
         if(employee.is_available)
         {
 
-            return res.status(404).json({message:"El empleado ya esta disponible"})
+            return res.status(404).json({message:"El empleado ya esta activado"})
 
         }
 
         await employee.update({is_available:true})
 
-        res.json({message:"Empleado disponible!"})
+        res.json({message:"Empleado activado correctamente"})
 
 
     }catch(error){
