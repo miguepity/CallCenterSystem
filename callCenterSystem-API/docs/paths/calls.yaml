@@ -21,6 +21,50 @@
           application/json:
             example:
               error: Error al obtener llamadas
+          
+  post:
+    summary: Crear una llamada nueva
+    tags: [Calls]
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              caller_name:
+                type: string
+              caller_phone:
+                type: string
+              rank_required:
+                type: string 
+              status:
+                type: string 
+              started_at:
+                type: string
+                format: date-time
+              finished_at:
+                type: string
+                format: date-time
+                nullable: true 
+            required:
+              - caller_name
+              - caller_phone
+    responses:
+      '201':
+        description: Llamada creada correctamente
+        content:
+          application/json:
+            example:
+              id: 1
+              caller_name: "Carlos López"
+              caller_phone: "99998888"
+              rank_required: "2"
+              status: "pending"
+              started_at: "2026-06-02T10:00:00.000Z"
+              finished_at: null 
+      '500':
+        description: Error del servidor
 
 /calls/{id}:
   get:
@@ -88,9 +132,25 @@
               finished_at:
                 type: string
                 format: date-time
+                nullable: true 
+            required:
+              - caller_name
+              - caller_phone
+              - rank_required
+              - status
     responses:
       '200':
         description: Llamada actualizada correctamente
+        content:
+          application/json:
+            example:
+              id: 1
+              caller_name: "Carlos López"
+              caller_phone: "99998888"
+              rank_required: "2"
+              status: "pending"
+              started_at: "2026-06-02T10:00:00.000Z"
+              finished_at: null
       '404':
         description: Llamada no encontrada
         content:
@@ -100,3 +160,84 @@
       '500':
         description: Error del servidor
 
+  patch:
+    summary: Actualizar parcialmente una llamada
+    tags: [Calls]
+    parameters:
+      - name: id
+        in: path
+        required: true 
+        description: ID de la llamada 
+        schema:
+          type: integer
+          example: 1
+    requestBody:
+      required: true 
+      content:
+        application/json:
+          schema:
+            type: object 
+            properties:
+                caller_name:
+                  type: string
+                caller_phone:
+                  type: string
+                rank_required:
+                  type: string
+                status:
+                  type: string
+                started_at:
+                  type: string
+                  format: date-time
+                finished_at:
+                  type: string
+                  format: date-time
+                  nullable: true 
+    responses:
+      '200':
+        description: Llamada actualizada correctamente
+        content:
+          application/json:
+            example:
+              id: 1
+              caller_name: "Carlos López"
+              caller_phone: "99998888"
+              rank_required: "2"
+              status: "pending"
+              started_at: "2026-06-02T10:00:00.000Z"
+              finished_at: null
+      '404':
+        description: Llamada no encontrada
+        content:
+          application/json:
+            example:
+              error: Call not found
+      '500':
+        description: Error del servidor
+
+  delete:
+    summary: Eliminar una llamada 
+    tags: [Calls]
+    parameters:
+      - name: id 
+        in: path 
+        required: true 
+        description: ID de la llamada 
+        schema:
+          type: integer
+          example: 1
+    responses:
+        '200':
+          description: Llamada eliminada correctamente
+          content:
+            application/json:
+              example:
+                message: Call deleted
+        '404':
+          description: Llamada no encontrada
+          content:
+            application/json:
+              example:
+                error: Call not found
+        '500':
+          description: Error del servidor
