@@ -1,0 +1,158 @@
+/employees:
+  get:
+    summary: Listar todos los empleados
+    tags: [Employees]
+    parameters:
+      - name: is_available
+        in: query
+        required: false
+        description: Filtrar por disponibilidad del empleado
+        schema:
+          type: boolean
+          example: true
+      - name: rank
+        in: query
+        required: false
+        description: Filtrar por rango del empleado
+        schema:
+          type: integer
+          example: 2
+    responses:
+      '200':
+        description: Lista de empleados
+        content:
+          application/json:
+            example:
+              - id: "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+                name: "Juan Pérez"
+                rank: 1
+                is_available: true
+                created_at: "2026-05-21T01:26:49.000Z"
+      '500':
+        description: Error del servidor
+        content:
+          application/json:
+            example:
+              message: Error al obtener empleados
+              error: {}
+
+  post:
+    summary: Crear un empleado
+    tags: [Employees]
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - name
+              - rank
+            properties:
+              name:
+                type: string
+                maxLength: 100
+                example: "Juan Pérez"
+              rank:
+                type: integer
+                description: Rango/nivel del empleado (1 = junior, 2 = senior, 3 = especialista)
+                example: 1
+              is_available:
+                type: boolean
+                default: true
+                example: true
+    responses:
+      '201':
+        description: Empleado creado exitosamente
+        content:
+          application/json:
+            example:
+              id: "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+              name: "Juan Pérez"
+              rank: 1
+              is_available: true
+              created_at: "2026-05-21T01:26:49.000Z"
+      '500':
+        description: Error del servidor
+        content:
+          application/json:
+            example:
+              message: Error al crear empleado
+              error: "Validation error"
+
+/employees/{id}:
+  get:
+    summary: Obtener un empleado por ID
+    tags: [Employees]
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: UUID del empleado
+        schema:
+          type: string
+          format: uuid
+          example: "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+    responses:
+      '200':
+        description: Empleado encontrado
+        content:
+          application/json:
+            example:
+              id: "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+              name: "Juan Pérez"
+              rank: 1
+              is_available: true
+              created_at: "2026-05-21T01:26:49.000Z"
+      '404':
+        description: Empleado no encontrado
+        content:
+          application/json:
+            example:
+              message: Empleado no encontrado
+      '500':
+        description: Error del servidor
+        content:
+          application/json:
+            example:
+              message: Error al obtener el empleado
+              error: {}
+
+  delete:
+    summary: Eliminar un empleado
+    tags: [Employees]
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: UUID del empleado a eliminar
+        schema:
+          type: string
+          format: uuid
+          example: "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+    responses:
+      '200':
+        description: Empleado eliminado correctamente
+        content:
+          application/json:
+            example:
+              message: Empleado eliminado correctamente
+      '400':
+        description: No se puede eliminar porque tiene una llamada activa
+        content:
+          application/json:
+            example:
+              message: No se puede eliminar un empleado con una llamada activa
+      '404':
+        description: Empleado no encontrado
+        content:
+          application/json:
+            example:
+              message: Empleado no encontrado
+      '500':
+        description: Error del servidor
+        content:
+          application/json:
+            example:
+              message: Error al eliminar empleado
+              error: {}
