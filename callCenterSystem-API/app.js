@@ -14,8 +14,7 @@ var swaggerSpecs = require('./config/swagger.js');
 var app = express();
 
 const employeRoutes=require('./routes/employee')
-const swaggerUi=require('swagger-ui-express')
-const swaggerSpecs=require('./config/swagger.js')
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
