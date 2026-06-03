@@ -118,6 +118,63 @@
               message: Error al obtener el empleado
               error: {}
 
+  put:
+    summary: Actualizar un empleado
+    tags: [Employees]
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: UUID del empleado a actualizar
+        schema:
+          type: string
+          format: uuid
+          example: "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - name
+              - rank
+            properties:
+              name:
+                type: string
+                maxLength: 100
+                example: "Juan Pérez Actualizado"
+              rank:
+                type: integer
+                example: 2
+              is_available:
+                type: boolean
+                example: true
+    responses:
+      '200':
+        description: Empleado actualizado exitosamente
+        content:
+          application/json:
+            example:
+              id: "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+              name: "Juan Pérez Actualizado"
+              rank: 2
+              is_available: true
+              created_at: "2026-05-21T01:26:49.000Z"
+      '404':
+        description: Empleado no encontrado
+        content:
+          application/json:
+            example:
+              message: Empleado no encontrado
+      '500':
+        description: Error del servidor
+        content:
+          application/json:
+            example:
+              message: Error al actualizar empleado
+              error: "Error message"
+
   delete:
     summary: Eliminar un empleado
     tags: [Employees]
@@ -156,3 +213,164 @@
             example:
               message: Error al eliminar empleado
               error: {}
+
+/employees/{id}/calls:
+  get:
+    summary: Obtener historial de llamadas de un empleado
+    tags: [Employees]
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: UUID del empleado
+        schema:
+          type: string
+          format: uuid
+          example: "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+      - name: status
+        in: query
+        required: false
+        description: Filtrar por status de la llamada
+        schema:
+          type: string
+          enum: [pending, in_progress, completed]
+          example: completed
+      - name: from
+        in: query
+        required: false
+        description: Fecha inicio (ISO 8601)
+        schema:
+          type: string
+          format: date-time
+          example: "2026-05-01T00:00:00.000Z"
+      - name: to
+        in: query
+        required: false
+        description: Fecha fin (ISO 8601)
+        schema:
+          type: string
+          format: date-time
+          example: "2026-05-31T23:59:59.000Z"
+    responses:
+      '200':
+        description: Historial de llamadas del empleado
+        content:
+          application/json:
+            example:
+              - id: 1
+                caller_name: "María López"
+                caller_phone: "9901-2345"
+                rank_required: "1"
+                status: "completed"
+                started_at: "2026-05-21T10:00:00.000Z"
+                finished_at: "2026-05-21T10:30:00.000Z"
+              - id: 2
+                caller_name: "Pedro Ramírez"
+                caller_phone: "9933-4567"
+                rank_required: "1"
+                status: "completed"
+                started_at: "2026-05-21T11:00:00.000Z"
+                finished_at: "2026-05-21T11:20:00.000Z"
+      '404':
+        description: Empleado no encontrado
+        content:
+          application/json:
+            example:
+              message: Empleado no encontrado
+      '500':
+        description: Error del servidor
+        content:
+          application/json:
+            example:
+              message: Error al obtener historial
+              error: "Error message"
+
+/employees/{id}/stats:
+  get:
+    summary: Obtener estadísticas de un empleado
+    tags: [Employees]
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: UUID del empleado
+        schema:
+          type: string
+          format: uuid
+          example: "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+    responses:
+      '200':
+        description: Estadísticas del empleado
+        content:
+          application/json:
+            example:
+              employee_id: "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+              name: "Juan Pérez"
+              total_calls: 25
+              completed_calls: 22
+              in_progress_calls: 1
+              pending_calls: 2
+              avg_duration_minutes: 18.5
+      '404':
+        description: Empleado no encontrado
+        content:
+          application/json:
+            example:
+              message: Empleado no encontrado
+      '500':
+        description: Error del servidor
+        content:
+          application/json:
+            example:
+              message: Error al obtener estadísticas
+              error: "Error message"
+
+/employees/{id}/availability:
+  patch:
+    summary: Cambiar disponibilidad de un empleado
+    tags: [Employees]
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: UUID del empleado
+        schema:
+          type: string
+          format: uuid
+          example: "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - is_available
+            properties:
+              is_available:
+                type: boolean
+                example: true
+    responses:
+      '200':
+        description: Disponibilidad actualizada
+        content:
+          application/json:
+            example:
+              message: Disponibilidad actualizada
+              employee:
+                id: "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+                name: "Juan Pérez"
+                is_available: true
+      '404':
+        description: Empleado no encontrado
+        content:
+          application/json:
+            example:
+              message: Empleado no encontrado
+      '500':
+        description: Error del servidor
+        content:
+          application/json:
+            example:
+              message: Error al actualizar disponibilidad
+              error: "Error message"
