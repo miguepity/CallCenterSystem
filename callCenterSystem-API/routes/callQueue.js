@@ -9,7 +9,7 @@ const {
 
 /**
  * @swagger
- * /call-queue:
+ * /api/call-queue:
  *   post:
  *     summary: Create a new call queue entry
  *     tags: [Call Queues]
@@ -63,7 +63,7 @@ router.post('/call-queue', postCallQueue)
 
 /**
  * @swagger
- * /call-queue/{queueId}:
+ * /api/call-queue/{queueId}:
  *   get:
  *     summary: Get a call queue entry by ID
  *     tags: [Call Queues]
@@ -98,7 +98,7 @@ router.get('/call-queue/:queueId', getCallQueue)
 
 /**
  * @swagger
- * /call-queue/{queueId}:
+ * /api/call-queue/{queueId}:
  *   put:
  *     summary: Update priority of a call queue entry
  *     tags: [Call Queues]
@@ -146,7 +146,7 @@ router.put('/call-queue/:queueId', putCallQueue)
 
 /**
  * @swagger
- * /call-queue/{queueId}:
+ * /api/call-queue/{queueId}:
  *   delete:
  *     summary: Delete a call queue entry
  *     tags: [Call Queues]
