@@ -1,0 +1,170 @@
+/queue:
+  get:
+    summary: Obtener toda la cola de llamadas
+    tags: [CallQueue]
+    responses:
+      '200':
+        description: Lista de entradas en la cola
+        content:
+          application/json:
+            example:
+              - id: "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+                call_id: "b2c3d4e5-f6a7-8901-bcde-f12345678901"
+                priority: 2
+                joined_at: "2026-05-21T10:00:00.000Z"
+                call:
+                  id: "b2c3d4e5-f6a7-8901-bcde-f12345678901"
+                  caller_name: "María López"
+                  caller_phone: "9901-2345"
+                  rank_required: "2"
+                  status: "pending"
+              - id: "c3d4e5f6-a7b8-9012-cdef-123456789012"
+                call_id: "d4e5f6a7-b8c9-0123-defa-234567890123"
+                priority: 1
+                joined_at: "2026-05-21T10:05:00.000Z"
+                call:
+                  id: "d4e5f6a7-b8c9-0123-defa-234567890123"
+                  caller_name: "Pedro Ramírez"
+                  caller_phone: "9933-4567"
+                  rank_required: "1"
+                  status: "pending"
+      '500':
+        description: Error del servidor
+        content:
+          application/json:
+            example:
+              message: Error al obtener la cola
+              error: "Error message"
+
+/queue/{id}:
+  get:
+    summary: Obtener una entrada de la cola por ID
+    tags: [CallQueue]
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: UUID de la entrada en la cola
+        schema:
+          type: string
+          format: uuid
+          example: "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+    responses:
+      '200':
+        description: Entrada encontrada
+        content:
+          application/json:
+            example:
+              id: "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+              call_id: "b2c3d4e5-f6a7-8901-bcde-f12345678901"
+              priority: 2
+              joined_at: "2026-05-21T10:00:00.000Z"
+              call:
+                id: "b2c3d4e5-f6a7-8901-bcde-f12345678901"
+                caller_name: "María López"
+                caller_phone: "9901-2345"
+                rank_required: "2"
+                status: "pending"
+      '404':
+        description: Entrada no encontrada
+        content:
+          application/json:
+            example:
+              message: Entrada no encontrada
+      '500':
+        description: Error del servidor
+        content:
+          application/json:
+            example:
+              message: Error al obtener la entrada
+              error: "Error message"
+
+  delete:
+    summary: Remover una llamada de la cola
+    tags: [CallQueue]
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: UUID de la entrada en la cola a eliminar
+        schema:
+          type: string
+          format: uuid
+          example: "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+    responses:
+      '200':
+        description: Llamada removida de la cola
+        content:
+          application/json:
+            example:
+              message: Llamada removida de la cola
+      '404':
+        description: Entrada no encontrada
+        content:
+          application/json:
+            example:
+              message: Entrada no encontrada
+      '500':
+        description: Error del servidor
+        content:
+          application/json:
+            example:
+              message: Error al remover la llamada
+              error: "Error message"
+
+/queue/enqueue:
+  post:
+    summary: Agregar una llamada a la cola
+    tags: [CallQueue]
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - call_id
+            properties:
+              call_id:
+                type: string
+                format: uuid
+                description: UUID de la llamada a encolar
+                example: "b2c3d4e5-f6a7-8901-bcde-f12345678901"
+              priority:
+                type: integer
+                description: Prioridad en la cola (por defecto 1)
+                default: 1
+                example: 2
+    responses:
+      '201':
+        description: Llamada encolada exitosamente
+        content:
+          application/json:
+            example:
+              id: "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+              call_id: "b2c3d4e5-f6a7-8901-bcde-f12345678901"
+              priority: 2
+              joined_at: "2026-05-21T10:00:00.000Z"
+      '404':
+        description: Llamada no encontrada
+        content:
+          application/json:
+            example:
+              message: Llamada no encontrada
+      '500':
+        description: Error del servidor
+        content:
+          application/json:
+            example:
+              message: Error al encolar la llamada
+              error: "Error message"
+
+/queue/dispatch:
+  post:
+    summary: Despachar la siguiente llamada de la cola al empleado disponible
+    tags: [CallQueue]
+    responses:
+      '200':
+        description: Llamada despachada o cola/empleados sin disponibilidad
+        content:
+          application/json:
