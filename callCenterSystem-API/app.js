@@ -12,6 +12,8 @@ var callQueue = require('./routes/callQueue');
 var app = express();
 
 const employeRoutes=require('./routes/employee')
+const swaggerUi=require('swagger-ui-express')
+const swaggerSpecs=require('./config/swagger.js')
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -28,6 +30,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/api', callsRouter);
 app.use('/api', callQueue);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs))
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -45,9 +48,6 @@ app.use(function (err, req, res, next) {
   res.render('error');
 });
 
-const swaggerUi=require('swagger-ui-express')
 
-const swaggerSpecs=require('./config/swagger.js')
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs))
 
 module.exports = app;
