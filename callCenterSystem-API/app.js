@@ -8,6 +8,8 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var callsRouter = require('./routes/calls');
 var callQueue = require('./routes/callQueue');
+var swaggerUi = require('swagger-ui-express');
+var swaggerSpecs = require('./config/swagger.js');
 
 var app = express();
 
