@@ -10,8 +10,10 @@ var employeesRouter = require('./routes/employees');
 var callsRouter = require('./routes/calls');
 var employeesRouter = require('./routes/employees');
 var queueRouter = require('./routes/queue');
+var swaggerSetup = require('./config/swagger');
 
 var app = express();
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -29,6 +31,7 @@ app.use('/employees', employeesRouter);
 app.use('/calls', callsRouter);
 app.use('/employees', employeesRouter);
 app.use('/queue', require('./routes/queue'));
+swaggerSetup(app);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
