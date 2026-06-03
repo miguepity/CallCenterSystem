@@ -96,10 +96,29 @@ const deleteCall = async (req, res) => {
   }
 };
 
+// PATCH /calls/:id
+const patchCall = async (req, res) => {
+  try {
+    const call = await Calls.findByPk(req.params.id);
+
+    if (!call) {
+      return res.status(404).json({ error: 'Call not found' });
+    }
+
+    // Actualiza solo los campos enviados en el body
+    await call.update(req.body);
+    res.json(call);
+  } catch (error) {
+    console.error('ERROR PATCH /calls/:id:', error);
+    res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   getCalls,
   getCallById,
   updateCall,
   createCall,
-  deleteCall
+  deleteCall,
+  patchCall
 };

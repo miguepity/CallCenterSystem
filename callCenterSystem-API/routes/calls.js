@@ -7,5 +7,6 @@ router.get('/:id', callsController.getCallById);
 router.put('/:id',callsController.updateCall);
 router.post('/', callsController.createCall);
 router.delete('/:id', callsController.deleteCall);
+router.patch('/:id', callsController.patchCall);
 
 module.exports = router;
