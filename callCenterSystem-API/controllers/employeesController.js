@@ -144,7 +144,7 @@ const getEmployeeStats = async (req, res) => {
     const { Calls } = require('../models');
     const allCalls = await Calls.findAll({ where: { employeeId: req.params.id } });
 
-    const completed = allCalls.filter(c => c.status === 'completed');
+    const completed = allCalls.filter(c => c.status === 'finished');  
     const avgDuration = completed.length
       ? completed.reduce((acc, c) => {
           const diff = new Date(c.finished_at) - new Date(c.started_at);
@@ -157,8 +157,9 @@ const getEmployeeStats = async (req, res) => {
       name: employee.name,
       total_calls: allCalls.length,
       completed_calls: completed.length,
-      in_progress_calls: allCalls.filter(c => c.status === 'in_progress').length,
-      pending_calls: allCalls.filter(c => c.status === 'pending').length,
+      in_progress_calls: allCalls.filter(c => c.status === 'active').length,      
+      pending_calls: allCalls.filter(c => c.status === 'queued').length,         
+      escalated_calls: allCalls.filter(c => c.status === 'escalated').length,     
       avg_duration_minutes: parseFloat(avgDuration.toFixed(2))
     });
   } catch (error) {

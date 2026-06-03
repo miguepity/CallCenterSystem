@@ -9,7 +9,6 @@
         description: Filtrar por disponibilidad del empleado
         schema:
           type: boolean
-          example: true
       - name: rank
         in: query
         required: false
@@ -233,7 +232,7 @@
         description: Filtrar por status de la llamada
         schema:
           type: string
-          enum: [pending, in_progress, completed]
+          enum: [queued, active, finished, escalated]
           example: completed
       - name: from
         in: query
@@ -310,6 +309,7 @@
               completed_calls: 22
               in_progress_calls: 1
               pending_calls: 2
+              escalated_calls: 0
               avg_duration_minutes: 18.5
       '404':
         description: Empleado no encontrado
