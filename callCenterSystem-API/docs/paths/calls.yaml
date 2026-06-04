@@ -13,6 +13,7 @@
                 caller_phone: "99998888"
                 rank_required: "2"
                 status: "pending"
+                employeeId: "21c954a2-f8c5-4847-8f9e-1ef63915e219"
                 started_at: "2026-06-02T10:00:00.000Z"
                 finished_at: null
       '500':
@@ -21,7 +22,7 @@
           application/json:
             example:
               error: Error al obtener llamadas
-          
+
   post:
     summary: Crear una llamada nueva
     tags: [Calls]
@@ -34,22 +35,33 @@
             properties:
               caller_name:
                 type: string
+                example: "Carlos López"
               caller_phone:
                 type: string
+                example: "99998888"
               rank_required:
-                type: string 
+                type: string
+                example: "2"
               status:
-                type: string 
+                type: string
+                example: "pending"
+              employeeId:
+                type: string
+                format: uuid
+                example: "21c954a2-f8c5-4847-8f9e-1ef63915e219"
               started_at:
                 type: string
                 format: date-time
+                example: "2026-06-02T10:00:00.000Z"
               finished_at:
                 type: string
                 format: date-time
-                nullable: true 
+                nullable: true
+                example: null
             required:
               - caller_name
               - caller_phone
+              - employeeId
     responses:
       '201':
         description: Llamada creada correctamente
@@ -61,8 +73,9 @@
               caller_phone: "99998888"
               rank_required: "2"
               status: "pending"
+              employeeId: "21c954a2-f8c5-4847-8f9e-1ef63915e219"
               started_at: "2026-06-02T10:00:00.000Z"
-              finished_at: null 
+              finished_at: null
       '500':
         description: Error del servidor
 
@@ -89,6 +102,7 @@
               caller_phone: "99998888"
               rank_required: "2"
               status: "pending"
+              employeeId: "21c954a2-f8c5-4847-8f9e-1ef63915e219"
               started_at: "2026-06-02T10:00:00.000Z"
               finished_at: null
       '404':
@@ -120,24 +134,35 @@
             properties:
               caller_name:
                 type: string
+                example: "Carlos López"
               caller_phone:
                 type: string
+                example: "99998888"
               rank_required:
                 type: string
+                example: "2"
               status:
                 type: string
+                example: "pending"
+              employeeId:
+                type: string
+                format: uuid
+                example: "21c954a2-f8c5-4847-8f9e-1ef63915e219"
               started_at:
                 type: string
                 format: date-time
+                example: "2026-06-02T10:00:00.000Z"
               finished_at:
                 type: string
                 format: date-time
-                nullable: true 
+                nullable: true
+                example: null
             required:
               - caller_name
               - caller_phone
               - rank_required
               - status
+              - employeeId
     responses:
       '200':
         description: Llamada actualizada correctamente
@@ -149,6 +174,7 @@
               caller_phone: "99998888"
               rank_required: "2"
               status: "pending"
+              employeeId: "21c954a2-f8c5-4847-8f9e-1ef63915e219"
               started_at: "2026-06-02T10:00:00.000Z"
               finished_at: null
       '404':
@@ -166,33 +192,43 @@
     parameters:
       - name: id
         in: path
-        required: true 
-        description: ID de la llamada 
+        required: true
+        description: ID de la llamada
         schema:
           type: integer
           example: 1
     requestBody:
-      required: true 
+      required: true
       content:
         application/json:
           schema:
-            type: object 
+            type: object
             properties:
-                caller_name:
-                  type: string
-                caller_phone:
-                  type: string
-                rank_required:
-                  type: string
-                status:
-                  type: string
-                started_at:
-                  type: string
-                  format: date-time
-                finished_at:
-                  type: string
-                  format: date-time
-                  nullable: true 
+              caller_name:
+                type: string
+                example: "Carlos López"
+              caller_phone:
+                type: string
+                example: "99998888"
+              rank_required:
+                type: string
+                example: "2"
+              status:
+                type: string
+                example: "pending"
+              employeeId:
+                type: string
+                format: uuid
+                example: "21c954a2-f8c5-4847-8f9e-1ef63915e219"
+              started_at:
+                type: string
+                format: date-time
+                example: "2026-06-02T10:00:00.000Z"
+              finished_at:
+                type: string
+                format: date-time
+                nullable: true
+                example: null
     responses:
       '200':
         description: Llamada actualizada correctamente
@@ -204,6 +240,7 @@
               caller_phone: "99998888"
               rank_required: "2"
               status: "pending"
+              employeeId: "21c954a2-f8c5-4847-8f9e-1ef63915e219"
               started_at: "2026-06-02T10:00:00.000Z"
               finished_at: null
       '404':
@@ -216,28 +253,28 @@
         description: Error del servidor
 
   delete:
-    summary: Eliminar una llamada 
+    summary: Eliminar una llamada
     tags: [Calls]
     parameters:
-      - name: id 
-        in: path 
-        required: true 
-        description: ID de la llamada 
+      - name: id
+        in: path
+        required: true
+        description: ID de la llamada
         schema:
           type: integer
           example: 1
     responses:
-        '200':
-          description: Llamada eliminada correctamente
-          content:
-            application/json:
-              example:
-                message: Call deleted
-        '404':
-          description: Llamada no encontrada
-          content:
-            application/json:
-              example:
-                error: Call not found
-        '500':
-          description: Error del servidor
+      '200':
+        description: Llamada eliminada correctamente
+        content:
+          application/json:
+            example:
+              message: Call deleted
+      '404':
+        description: Llamada no encontrada
+        content:
+          application/json:
+            example:
+              error: Call not found
+      '500':
+        description: Error del servidor
