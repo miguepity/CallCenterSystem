@@ -1,4 +1,5 @@
-const {employees} = require('../models')
+const {employees,Calls} = require('../models')
+const{Op}=require('sequelize')
 
 const createEmployee=async(req,res)=>
 {
@@ -12,6 +13,16 @@ const createEmployee=async(req,res)=>
         {
 
             return res.status(400).json({message:'El nombre es requerido'})
+
+        }
+
+        //el nombre no puede repetirse
+        const existingEmployee=await employees.findOne({where:{name}})
+
+        if(existingEmployee)
+        {
+
+            return res.status(409).json({message:'El nombre del empleado ya existe'})
 
         }
 
@@ -65,10 +76,19 @@ const desactivarEmployee=async(req,res)=>
 
         }
 
+        //no se puede desactivar un empleado con una llamada activa
+        const activeCall=await Calls.findOne({where:{employeeId:id,finished_at:{[Op.is]:null}}})
+        if(activeCall)
+        {
+
+            return res.status(409).json({message:"No se puede desactivar un empleado con una llamada activa"})
+
+        }
+
         if(!employee.is_available)
         {
 
-            return res.status(404).json({message:"El empleado ya esta desactivado"})
+            return res.status(409).json({message:"El empleado ya esta desactivado"})
 
         }
 
@@ -105,7 +125,7 @@ const activarEmpleado=async(req,res)=>
         if(employee.is_available)
         {
 
-            return res.status(404).json({message:"El empleado ya esta activado"})
+            return res.status(409).json({message:"El empleado ya esta activado"})
 
         }
 
