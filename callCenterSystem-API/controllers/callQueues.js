@@ -81,7 +81,7 @@ async function deleteCallQueue(req, res) {
         return res.status(400).json({ message: 'Please pass the queue id as route parameter' });
 
     try {
-        const queue = await db['call_queue'].findByPk(queueId);
+        const queue = await db['call_queues'].findByPk(queueId);
 
         if (!queue)
             return res.status(404).json({ message: `Not found any call queue with id: ${queueId}` });
