@@ -10,18 +10,26 @@ module.exports = {
         defaultValue: Sequelize.UUIDV4
       },
       caller_name: {
+        allowNull: false,
+        unique: true,
         type: Sequelize.STRING
       },
       caller_phone: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       rank_required: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       status: {
+        allowNull: false,
+        defaultValue: 'pending',
         type: Sequelize.STRING
       },
       started_at: {
+        allowNull: false,
+        defaultValue: Sequelize.NOW,
         type: Sequelize.DATE
       },
       finished_at: {
@@ -36,10 +44,12 @@ module.exports = {
       },
       created_at: {
         allowNull: false,
+        defaultValue: Sequelize.NOW,
         type: Sequelize.DATE
       },
       updated_at: {
         allowNull: false,
+        defaultValue: Sequelize.NOW,
         type: Sequelize.DATE
       }
     });
