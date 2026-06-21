@@ -20,7 +20,7 @@ module.exports = {
       },
       rank_required: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.INTEGER
       },
       status: {
         allowNull: false,
