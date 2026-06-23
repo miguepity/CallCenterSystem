@@ -35,12 +35,13 @@ const getEmployeeById = async (req, res) => {
 
 const createEmployee = async (req, res) => {
   try {
-    const { name, rank, is_available } = req.body;
+    const { name, rank, is_available, is_active } = req.body;
 
     const newEmployee = await employees.create({
       name,
       rank,
       is_available: is_available !== undefined ? is_available : true,
+      is_active: is_active !== undefined ? is_active : true,
       created_at: new Date()
     });
 
