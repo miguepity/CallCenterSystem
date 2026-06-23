@@ -8,5 +8,9 @@ router.put('/:id',callsController.updateCall);
 router.post('/', callsController.createCall);
 router.delete('/:id', callsController.deleteCall);
 router.patch('/:id', callsController.patchCall);
+router.post('/:id/escalate', callsController.escalateCall);
+router.post('/:id/finish', callsController.finishCall);
+router.post('/:id/assign', callsController.assignAgent);
+router.post('/:id/dispatch', callsController.dispatchCall);
 
 module.exports = router;

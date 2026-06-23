@@ -114,11 +114,145 @@ const patchCall = async (req, res) => {
   }
 };
 
+// POST /calls/:id/escalate
+const escalateCall = async (req, res) => {
+  try {
+    const call = await Calls.findByPk(req.params.id);
+    if (!call) {
+      return res.status(404).json({ error: 'Call not found' });
+    }
+
+    const currentRank = call.rank_required ?? 1;
+    const maxRank = 3;
+
+    if (currentRank >= maxRank) {
+      return res.status(400).json({ error: 'Call already at maximum rank' });
+    }
+
+    await call.update({
+      rank_required: currentRank + 1,
+      escalations: (call.escalations ?? 0) + 1,
+      status: 'queue',
+    });
+
+    const updatedCall = await Calls.findByPk(req.params.id, {
+      include: [
+        { model: employees, as: 'employee' },
+        { model: call_queue, as: 'queue' },
+      ],
+    });
+
+    res.json(updatedCall);
+  } catch (error) {
+    console.error('ERROR POST /calls/:id/escalate:', error);
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// POST /calls/:id/finish
+const finishCall = async (req, res) => {
+  try {
+    const call = await Calls.findByPk(req.params.id);
+    if (!call) {
+      return res.status(404).json({ error: 'Call not found' });
+    }
+
+    await call.update({
+      status: 'finished',
+      finished_at: new Date(),
+    });
+
+    const updatedCall = await Calls.findByPk(req.params.id, {
+      include: [
+        { model: employees, as: 'employee' },
+        { model: call_queue, as: 'queue' },
+      ],
+    });
+
+    res.json(updatedCall);
+  } catch (error) {
+    console.error('ERROR POST /calls/:id/finish:', error);
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// POST /calls/:id/assign
+const assignAgent = async (req, res) => {
+  try {
+    const { employee_id } = req.body;
+
+    const call = await Calls.findByPk(req.params.id);
+    if (!call) {
+      return res.status(404).json({ error: 'Call not found' });
+    }
+
+    const employee = await employees.findByPk(employee_id);
+    if (!employee) {
+      return res.status(404).json({ error: 'Employee not found' });
+    }
+
+    await call.update({
+      employee_id,
+      status: 'escalated',
+    });
+
+    const updatedCall = await Calls.findByPk(req.params.id, {
+      include: [
+        { model: employees, as: 'employee' },
+        { model: call_queue, as: 'queue' },
+      ],
+    });
+
+    res.json(updatedCall);
+  } catch (error) {
+    console.error('ERROR POST /calls/:id/assign:', error);
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// POST /calls/:id/dispatch
+const dispatchCall = async (req, res) => {
+  try {
+    const { employee_id } = req.body;
+
+    const call = await Calls.findByPk(req.params.id);
+    if (!call) {
+      return res.status(404).json({ error: 'Call not found' });
+    }
+
+    const employee = await employees.findByPk(employee_id);
+    if (!employee) {
+      return res.status(404).json({ error: 'Employee not found' });
+    }
+
+    await call.update({
+      employee_id,
+      status: 'active',
+    });
+
+    const updatedCall = await Calls.findByPk(req.params.id, {
+      include: [
+        { model: employees, as: 'employee' },
+        { model: call_queue, as: 'queue' },
+      ],
+    });
+
+    res.json(updatedCall);
+  } catch (error) {
+    console.error('ERROR POST /calls/:id/dispatch:', error);
+    res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   getCalls,
   getCallById,
   updateCall,
   createCall,
   deleteCall,
-  patchCall
+  patchCall,
+  escalateCall,
+  finishCall,
+  assignAgent,
+  dispatchCall,
 };
