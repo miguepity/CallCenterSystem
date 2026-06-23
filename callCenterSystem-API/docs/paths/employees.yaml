@@ -1,4 +1,4 @@
-/employees:
+/api/employees:
   get:
     summary: Listar todos los empleados
     tags: [Employees]
@@ -79,7 +79,7 @@
               message: Error al crear empleado
               error: "Validation error"
 
-/employees/{id}:
+/api/employees/{id}:
   get:
     summary: Obtener un empleado por ID
     tags: [Employees]
@@ -213,7 +213,7 @@
               message: Error al eliminar empleado
               error: {}
 
-/employees/{id}/calls:
+/api/employees/{id}/calls:
   get:
     summary: Obtener historial de llamadas de un empleado
     tags: [Employees]
@@ -284,7 +284,7 @@
               message: Error al obtener historial
               error: "Error message"
 
-/employees/{id}/stats:
+/api/employees/{id}/stats:
   get:
     summary: Obtener estadísticas de un empleado
     tags: [Employees]
@@ -325,7 +325,7 @@
               message: Error al obtener estadísticas
               error: "Error message"
 
-/employees/{id}/availability:
+/api/employees/{id}/availability:
   patch:
     summary: Cambiar disponibilidad de un empleado
     tags: [Employees]

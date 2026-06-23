@@ -27,11 +27,11 @@ app.use(cookieParser());
 app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/employees', employeesRouter);
-app.use('/calls', callsRouter);
-app.use('/queue', require('./routes/queue'));
+app.use('/api', indexRouter);
+app.use('/api/users', usersRouter);
+app.use('/api/employees', employeesRouter);
+app.use('/api/calls', callsRouter);
+app.use('/api/queue', require('./routes/queue'));
 swaggerSetup(app);
 
 // catch 404 and forward to error handler

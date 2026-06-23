@@ -1,4 +1,4 @@
-/queue:
+/api/queue:
   get:
     summary: Obtener toda la cola de llamadas
     tags: [CallQueue]
@@ -36,7 +36,7 @@
               message: Error al obtener la cola
               error: "Error message"
 
-/queue/{id}:
+/api/queue/{id}:
   get:
     summary: Obtener una entrada de la cola por ID
     tags: [CallQueue]
@@ -112,7 +112,7 @@
               message: Error al remover la llamada
               error: "Error message"
 
-/queue/enqueue:
+/api/queue/enqueue:
   post:
     summary: Agregar una llamada a la cola
     tags: [CallQueue]
@@ -159,7 +159,7 @@
               message: Error al encolar la llamada
               error: "Error message"
 
-/queue/dispatch:
+/api/queue/dispatch:
   post:
     summary: Despachar la siguiente llamada de la cola al empleado disponible
     tags: [CallQueue]

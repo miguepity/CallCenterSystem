@@ -1,4 +1,4 @@
-/calls:
+/api/calls:
   get:
     summary: Listar todas las llamadas
     tags: [Calls]
@@ -11,10 +11,10 @@
               - id: 1
                 caller_name: "Carlos López"
                 caller_phone: "99998888"
-                rank_required: "2"
-                status: "pending"
-                employeeId: "21c954a2-f8c5-4847-8f9e-1ef63915e219"
-                started_at: "2026-06-02T10:00:00.000Z"
+                rank_required: 2
+                status: "queued"
+                employeeId: null
+                started_at: null
                 finished_at: null
       '500':
         description: Error del servidor
@@ -40,28 +40,12 @@
                 type: string
                 example: "99998888"
               rank_required:
-                type: string
-                example: "2"
-              status:
-                type: string
-                example: "pending"
-              employeeId:
-                type: string
-                format: uuid
-                example: "21c954a2-f8c5-4847-8f9e-1ef63915e219"
-              started_at:
-                type: string
-                format: date-time
-                example: "2026-06-02T10:00:00.000Z"
-              finished_at:
-                type: string
-                format: date-time
-                nullable: true
-                example: null
+                type: integer
+                example: 2
             required:
               - caller_name
               - caller_phone
-              - employeeId
+              - rank_required
     responses:
       '201':
         description: Llamada creada correctamente
@@ -71,15 +55,15 @@
               id: 1
               caller_name: "Carlos López"
               caller_phone: "99998888"
-              rank_required: "2"
-              status: "pending"
-              employeeId: "21c954a2-f8c5-4847-8f9e-1ef63915e219"
-              started_at: "2026-06-02T10:00:00.000Z"
+              rank_required: 2
+              status: "queued"
+              employeeId: null
+              started_at: null
               finished_at: null
       '500':
         description: Error del servidor
 
-/calls/{id}:
+/api/calls/{id}:
   get:
     summary: Obtener una llamada por ID
     tags: [Calls]
@@ -100,10 +84,10 @@
               id: 1
               caller_name: "Carlos López"
               caller_phone: "99998888"
-              rank_required: "2"
-              status: "pending"
-              employeeId: "21c954a2-f8c5-4847-8f9e-1ef63915e219"
-              started_at: "2026-06-02T10:00:00.000Z"
+              rank_required: 2
+              status: "queued"
+              employeeId: null
+              started_at: null
               finished_at: null
       '404':
         description: Llamada no encontrada
@@ -134,55 +118,35 @@
             properties:
               caller_name:
                 type: string
-                example: "Carlos López"
               caller_phone:
                 type: string
-                example: "99998888"
               rank_required:
-                type: string
-                example: "2"
+                type: integer
               status:
                 type: string
-                example: "pending"
+                enum: [queued, active, escalated, finished]
               employeeId:
                 type: string
                 format: uuid
-                example: "21c954a2-f8c5-4847-8f9e-1ef63915e219"
+                nullable: true
               started_at:
                 type: string
                 format: date-time
-                example: "2026-06-02T10:00:00.000Z"
+                nullable: true
               finished_at:
                 type: string
                 format: date-time
                 nullable: true
-                example: null
             required:
               - caller_name
               - caller_phone
               - rank_required
               - status
-              - employeeId
     responses:
       '200':
         description: Llamada actualizada correctamente
-        content:
-          application/json:
-            example:
-              id: 1
-              caller_name: "Carlos López"
-              caller_phone: "99998888"
-              rank_required: "2"
-              status: "pending"
-              employeeId: "21c954a2-f8c5-4847-8f9e-1ef63915e219"
-              started_at: "2026-06-02T10:00:00.000Z"
-              finished_at: null
       '404':
         description: Llamada no encontrada
-        content:
-          application/json:
-            example:
-              error: Call not found
       '500':
         description: Error del servidor
 
@@ -206,49 +170,30 @@
             properties:
               caller_name:
                 type: string
-                example: "Carlos López"
               caller_phone:
                 type: string
-                example: "99998888"
               rank_required:
-                type: string
-                example: "2"
+                type: integer
               status:
                 type: string
-                example: "pending"
+                enum: [queued, active, escalated, finished]
               employeeId:
                 type: string
                 format: uuid
-                example: "21c954a2-f8c5-4847-8f9e-1ef63915e219"
+                nullable: true
               started_at:
                 type: string
                 format: date-time
-                example: "2026-06-02T10:00:00.000Z"
+                nullable: true
               finished_at:
                 type: string
                 format: date-time
                 nullable: true
-                example: null
     responses:
       '200':
         description: Llamada actualizada correctamente
-        content:
-          application/json:
-            example:
-              id: 1
-              caller_name: "Carlos López"
-              caller_phone: "99998888"
-              rank_required: "2"
-              status: "pending"
-              employeeId: "21c954a2-f8c5-4847-8f9e-1ef63915e219"
-              started_at: "2026-06-02T10:00:00.000Z"
-              finished_at: null
       '404':
         description: Llamada no encontrada
-        content:
-          application/json:
-            example:
-              error: Call not found
       '500':
         description: Error del servidor
 
