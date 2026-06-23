@@ -7,7 +7,9 @@ const getEmployees = async (req, res) => {
     if (req.query.is_available !== undefined) {
       where.is_available = req.query.is_available === 'true';
     }
-
+    if (req.query.is_active !== undefined) {
+      where.is_active = req.query.is_active === 'true';
+    }
     if (req.query.rank !== undefined) {
       where.rank = req.query.rank;
     }
@@ -22,11 +24,7 @@ const getEmployees = async (req, res) => {
 const getEmployeeById = async (req, res) => {
   try {
     const employee = await employees.findByPk(req.params.id);
-
-    if (!employee) {
-      return res.status(404).json({ message: 'Empleado no encontrado' });
-    }
-
+    if (!employee) return res.status(404).json({ message: 'Empleado no encontrado' });
     res.status(200).json(employee);
   } catch (error) {
     res.status(500).json({ message: 'Error al obtener el empleado', error });
@@ -36,7 +34,6 @@ const getEmployeeById = async (req, res) => {
 const createEmployee = async (req, res) => {
   try {
     const { name, rank, is_available, is_active } = req.body;
-
     const newEmployee = await employees.create({
       name,
       rank,
@@ -44,7 +41,6 @@ const createEmployee = async (req, res) => {
       is_active: is_active !== undefined ? is_active : true,
       created_at: new Date()
     });
-
     res.status(201).json(newEmployee);
   } catch (error) {
     res.status(500).json({ message: 'Error al crear empleado', error: error.message });
@@ -54,11 +50,7 @@ const createEmployee = async (req, res) => {
 const updateEmployee = async (req, res) => {
   try {
     const employee = await employees.findByPk(req.params.id);
-
-    if (!employee) {
-      return res.status(404).json({ message: 'Empleado no encontrado' });
-    }
-
+    if (!employee) return res.status(404).json({ message: 'Empleado no encontrado' });
     await employee.update(req.body);
     res.status(200).json(employee);
   } catch (error) {
@@ -69,11 +61,7 @@ const updateEmployee = async (req, res) => {
 const updateAvailability = async (req, res) => {
   try {
     const employee = await employees.findByPk(req.params.id);
-
-    if (!employee) {
-      return res.status(404).json({ message: 'Empleado no encontrado' });
-    }
-
+    if (!employee) return res.status(404).json({ message: 'Empleado no encontrado' });
     await employee.update({ is_available: req.body.is_available });
     res.status(200).json({ message: 'Disponibilidad actualizada', employee });
   } catch (error) {
@@ -81,19 +69,32 @@ const updateAvailability = async (req, res) => {
   }
 };
 
+// NUEVO: activa o desactiva un agente (is_active)
+const updateActive = async (req, res) => {
+  try {
+    const employee = await employees.findByPk(req.params.id);
+    if (!employee) return res.status(404).json({ message: 'Empleado no encontrado' });
+
+    const updates = { is_active: req.body.is_active };
+    // Si se desactiva, también lo ponemos no disponible
+    if (!req.body.is_active) updates.is_available = false;
+
+    await employee.update(updates);
+    res.status(200).json({ message: 'Estado actualizado', employee });
+  } catch (error) {
+    res.status(500).json({ message: 'Error al actualizar estado', error: error.message });
+  }
+};
+
 const deleteEmployee = async (req, res) => {
   try {
     const employee = await employees.findByPk(req.params.id);
-
-    if (!employee) {
-      return res.status(404).json({ message: 'Empleado no encontrado' });
-    }
+    if (!employee) return res.status(404).json({ message: 'Empleado no encontrado' });
 
     const { Calls } = require('../models');
     const activeCall = await Calls.findOne({
       where: { employeeId: req.params.id, status: 'active' }
     });
-
     if (activeCall) {
       return res.status(400).json({ message: 'No se puede eliminar un empleado con una llamada activa' });
     }
@@ -108,19 +109,13 @@ const deleteEmployee = async (req, res) => {
 const getEmployeeCalls = async (req, res) => {
   try {
     const employee = await employees.findByPk(req.params.id);
-
-    if (!employee) {
-      return res.status(404).json({ message: 'Empleado no encontrado' });
-    }
+    if (!employee) return res.status(404).json({ message: 'Empleado no encontrado' });
 
     const { Calls } = require('../models');
     const { Op } = require('sequelize');
     const where = { employeeId: req.params.id };
 
-    if (req.query.status) {
-      where.status = req.query.status;
-    }
-
+    if (req.query.status) where.status = req.query.status;
     if (req.query.from || req.query.to) {
       where.started_at = {};
       if (req.query.from) where.started_at[Op.gte] = new Date(req.query.from);
@@ -137,19 +132,14 @@ const getEmployeeCalls = async (req, res) => {
 const getEmployeeStats = async (req, res) => {
   try {
     const employee = await employees.findByPk(req.params.id);
-
-    if (!employee) {
-      return res.status(404).json({ message: 'Empleado no encontrado' });
-    }
+    if (!employee) return res.status(404).json({ message: 'Empleado no encontrado' });
 
     const { Calls } = require('../models');
     const allCalls = await Calls.findAll({ where: { employeeId: req.params.id } });
-
-    const completed = allCalls.filter(c => c.status === 'finished');  
+    const completed = allCalls.filter(c => c.status === 'finished');
     const avgDuration = completed.length
       ? completed.reduce((acc, c) => {
-          const diff = new Date(c.finished_at) - new Date(c.started_at);
-          return acc + diff / 60000;
+          return acc + (new Date(c.finished_at) - new Date(c.started_at)) / 60000;
         }, 0) / completed.length
       : 0;
 
@@ -158,9 +148,9 @@ const getEmployeeStats = async (req, res) => {
       name: employee.name,
       total_calls: allCalls.length,
       completed_calls: completed.length,
-      in_progress_calls: allCalls.filter(c => c.status === 'active').length,      
-      pending_calls: allCalls.filter(c => c.status === 'queued').length,         
-      escalated_calls: allCalls.filter(c => c.status === 'escalated').length,     
+      in_progress_calls: allCalls.filter(c => c.status === 'active').length,
+      pending_calls: allCalls.filter(c => c.status === 'queued').length,
+      escalated_calls: allCalls.filter(c => c.status === 'escalated').length,
       avg_duration_minutes: parseFloat(avgDuration.toFixed(2))
     });
   } catch (error) {
@@ -174,6 +164,7 @@ module.exports = {
   createEmployee,
   updateEmployee,
   updateAvailability,
+  updateActive,
   deleteEmployee,
   getEmployeeCalls,
   getEmployeeStats

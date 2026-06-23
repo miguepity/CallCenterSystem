@@ -1,16 +1,8 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class employees extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
-      // define association here
       employees.hasMany(models.Calls,);
     }
   }
@@ -23,6 +15,10 @@ module.exports = (sequelize, DataTypes) => {
     },
     name: DataTypes.STRING(100),
     is_available: DataTypes.BOOLEAN,
+    is_active: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
+    },
     rank: DataTypes.INTEGER,
     created_at: DataTypes.DATE
   }, {
