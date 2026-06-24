@@ -157,6 +157,13 @@ const escalateCall = async (req, res) => {
     if (currentRank >= 3) {
       return res.status(400).json({ error: 'Call already at maximum rank' });
     }
+    
+    if (call.employeeId) {
+      await employees.update(
+        { is_available: true },
+        { where: { id: call.employeeId } }
+      );
+    }
 
     await call.update({
       rank_required: currentRank + 1,
@@ -179,6 +186,13 @@ const finishCall = async (req, res) => {
 
     if (!call) {
       return res.status(404).json({ error: 'Call not found' });
+    }
+
+    if (call.employeeId) {
+      await employees.update(
+        { is_available: true },
+        { where: { id: call.employeeId } }
+      );
     }
 
     await call.update({
@@ -249,6 +263,11 @@ const dispatchCall = async (req, res) => {
       employeeId: employee_id,
       status: 'active',
       started_at: call.started_at ?? new Date(),
+    });
+
+    await employee.update({ is_available: false });
+    await call_queue.destroy({
+      where: { call_id: call.id },
     });
 
     const updatedCall = await findCallById(req.params.id);
