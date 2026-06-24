@@ -49,12 +49,36 @@ const createCall = async (req, res) => {
       caller_name: req.body.caller_name,
       caller_phone: req.body.caller_phone,
       rank_required: req.body.rank_required ?? 1,
-      status: req.body.status ?? 'queued',
-      started_at: req.body.status === 'active' ? new Date() : null,
+      status: 'queued',
+      started_at: null,
       finished_at: null,
-      employeeId: req.body.employeeId ?? null,
+      employeeId: null,
       callQueueId: req.body.callQueueId ?? null,
     });
+
+    const availableAgent = await employees.findOne({
+      where: {
+        is_available: true,
+        rank: { [require('sequelize').Op.gte]: newCall.rank_required },
+      },
+    });
+
+    if (availableAgent) {
+      await newCall.update({
+        employeeId: availableAgent.id,
+        status: 'active',
+        started_at: new Date(),
+      });
+      await availableAgent.update({ is_available: false });
+    } else {
+
+      const priority = (await call_queue.count()) + 1;
+      await call_queue.create({
+        call_id: newCall.id,
+        priority,
+        joined_at: new Date(),
+      });
+    }
 
     const createdCall = await findCallById(newCall.id);
     res.status(201).json(createdCall);
